@@ -8,7 +8,7 @@ const path = require('path')
 
 const { userRegisterError, loginError, getUserInfoError, resetError, accountNotExited, userInfoUpdateError } = require('../constant/err.type')
 // const { get } = require('../router')
-const { getUserInfo, updateById } = require('../service/user.service')
+const { getUserInfo, updateById, getInfoLimit } = require('../service/user.service')
 
 class UserController {
   // 用户注册处理
@@ -149,6 +149,21 @@ class UserController {
     try {
       const {id} = ctx.request.body;
       const res = await getUserInfo({ id })
+      ctx.body = {
+        code: 200,
+        message: '用户信息获取成功',
+        res,
+      }
+    } catch (error) {
+      ctx.app.emit('error', getUserInfoError, ctx)
+    }
+  }
+
+  // 获取指定的用户信息
+  async getInfoLimit(ctx, next) {
+    try {
+      const {id} = ctx.request.body;
+      const res = await getInfoLimit({ id })
       ctx.body = {
         code: 200,
         message: '用户信息获取成功',

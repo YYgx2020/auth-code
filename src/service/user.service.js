@@ -51,10 +51,23 @@ class UserService {
 
     const res = await User.findOne({
       // 验证用户密码的时候需要拿到用户的密码
+      // attributes: ['id', 'email', 'password', 'username', 'register_time', 'is_admin', 'motto', 'user_avatar'],
       attributes: ['id', 'email', 'password', 'username', 'register_time', 'is_admin', 'motto', 'user_avatar'],
       where: whereOpt,
     })
     return res ? res.dataValues : null
+  }
+
+  // 获取指定的用户信息
+  async getInfoLimit({id}) {
+    const whereOpt = {}
+    id && Object.assign(whereOpt, {id})
+
+    const res = await User.findOne({
+      attributes: ['id', 'username', 'motto', 'user_avatar'],
+      where: whereOpt,
+    })
+    return res ? res.dataValues : null;
   }
 
   // 找回密码
