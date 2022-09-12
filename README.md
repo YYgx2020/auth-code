@@ -28,9 +28,9 @@ npm run serve
 # 本地端口
 APP_PORT = 6001
 # 发送验证码的邮箱（可以使用自己的qq邮箱做测试）
-HOST_EMAIL = yigou.lhy@foxmail.com
+HOST_EMAIL = 
 # qq邮箱 SMTP
-SMTP = xnessxskqszdbgce
+SMTP = 
 # qq邮箱的 SMTP 服务
 HOST = smtp.qq.com
 
