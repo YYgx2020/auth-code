@@ -13,7 +13,13 @@ class MessageController {
       }
       const { nickName, email, content, origin, articleId } = ctx.request.body;
       // 使用默认头像，网名，邮箱，发送时间，来源
-      const avatar = `${ctx.origin}/default/${getRandom(1, 20)}.png`;
+      let referer = '';
+      if (ctx.origin.indexOf('lianghongyi') !== -1) {
+        referer = 'https://ygapi.lianghongyi.com';
+      } else {
+        referer = 'http://' + ctx.host;
+      }
+      const avatar = `${referer}/default/${getRandom(1, 20)}.png`;
 
       const res = await createMessage(avatar, nickName, email, content, origin, articleId)
       console.log('留言消息新建成功', res);
@@ -23,7 +29,7 @@ class MessageController {
         result: '',
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       ctx.app.emit('error', messageSendError, ctx)
     }
   }
@@ -31,8 +37,8 @@ class MessageController {
   // 获取留言消息
   async getMessage(ctx, next) {
     try {
-      const { offset, limit, isSelected, articleId} = ctx.query;
-      const res = await getMessageList({offset, limit, isSelected, articleId})
+      const { offset, limit, isSelected, articleId } = ctx.query;
+      const res = await getMessageList({ offset, limit, isSelected, articleId })
       // console.log('返回的信息：', res);
       ctx.body = {
         code: 200,
@@ -40,7 +46,7 @@ class MessageController {
         result: res,
       }
     } catch (error) {
-      console.log('get: ', error);
+      // console.log('get: ', error);
       ctx.app.emit('error', messageGetError, ctx)
     }
   }
@@ -48,8 +54,8 @@ class MessageController {
   // 更新留言消息
   async updateMessage(ctx, next) {
     try {
-      let {id, isSelected, like, origin, articleId} = ctx.request.body;
-      let res = await updateById({id, isSelected, like, origin, articleId});
+      let { id, isSelected, like, origin, articleId } = ctx.request.body;
+      let res = await updateById({ id, isSelected, like, origin, articleId });
       console.log('数据更新结果：', res);
       ctx.body = {
         code: 200,
@@ -57,16 +63,16 @@ class MessageController {
         result: '',
       }
     } catch (error) {
-      console.log('留言消息更新失败', error);
+      // console.log('留言消息更新失败', error);
       ctx.app.emit('error', messageUpdateError, ctx);
     }
   }
-  
+
   // 删除留言消息
   async deleteMessage(ctx, next) {
     try {
-      let {id} = ctx.request.body;
-      let res = await deleteById({id});
+      let { id } = ctx.request.body;
+      let res = await deleteById({ id });
       console.log('数据更新结果：', res);
       ctx.body = {
         code: 200,
