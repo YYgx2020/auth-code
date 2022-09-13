@@ -14,7 +14,8 @@ class MessageController {
       const { nickName, email, content, origin, articleId } = ctx.request.body;
       // 使用默认头像，网名，邮箱，发送时间，来源
       let referer = '';
-      if (ctx.origin.indexOf('lianghongyi') !== -1) {
+      // console.log("ctx.origin.indexOf('lianghongyi')：", ctx.origin.indexOf('lianghongyi'));
+      if (ctx.request.header.origin.indexOf('lianghongyi') !== -1) {
         referer = 'https://ygapi.lianghongyi.com';
       } else {
         referer = 'http://' + ctx.host;
