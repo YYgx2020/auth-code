@@ -63,6 +63,21 @@ class ArticleController {
     }
   }
 
+  // 更新点赞、阅读量、评论消息的新增的时候不需要验证 token
+  async update_2(ctx, next) {
+    try {
+      const {id, title, content, like, read, category, tag, cover, abstract, updateTime, comment} = ctx.request.body;
+      const res = await updateById(id, title, content, like, read, category, tag, cover, abstract, updateTime, comment);
+      ctx.body = {
+        code: '200',
+        message: '数据更新成功！',
+        res,
+      }
+    } catch (error) {
+      ctx.app.emit('error', articleUpdateError, error);
+    }
+  }
+
   // 单独更新文章的留言数
   async updateComment(ctx, next) {
     try {

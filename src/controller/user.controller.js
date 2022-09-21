@@ -87,7 +87,7 @@ class UserController {
               username,
               isAdmin,
             }, JWT_SECRET, {
-            expiresIn: '1d'
+            expiresIn: '15d'
           }),
           userInfo: {
             id,
