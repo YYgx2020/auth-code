@@ -1,17 +1,20 @@
 // 专门用来上传图片的路由
 const Router = require('koa-router')
 
-const {getInfo, update, getInfoLimit} = require('../controller/user.controller')
-const {auth} = require('../middleware/auth.middleware')
-const router = new Router({prefix: '/api/user'})
+const { getInfo, register, login, update, findUserCode } = require('../controller/user.controller')
+const router = new Router({ prefix: '/api/user' })
 
 // 获取用户信息
-router.get('/get', auth, getInfo)
+router.get('/get', getInfo)
+// 登录接口
+router.post('/login', login)
+// 注册接口
+router.post('/register', register)
+// 更新用户信息接口
+router.post('/update', update)
+// 查找认证码
+router.post('/findCode', findUserCode)
 
-// 获取用户头像、用户名、格言
-router.get('/getLimit', getInfoLimit)
 
-// 修改用户信息
-router.post('/update', auth, update)
 
 module.exports = router

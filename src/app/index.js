@@ -1,11 +1,8 @@
-const path = require('path')
-
 const Koa = require('koa')
 const KoaBody = require('koa-body')
-const KoaStatic = require('koa-static')  // 引入koa-static实现生成图片链接
-const router = require('../router')
+const router = require('../router/user.route')
 const errHandler = require('./errHandler')
-const parameter = require('koa-parameter')
+// const parameter = require('koa-parameter')
 const app = new Koa()
 const cors = require('koa-cors')
 
@@ -24,19 +21,12 @@ app.use(cors({
   allowMethods: ['GET', 'POST', 'DELETE', 'PUT'], //设置允许的HTTP请求类型
   allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
 }));
-app.use(
-  KoaBody({
-    multipart: true,  // 支持图片文件
-    formidable: {
-      uploadDir: path.join(__dirname, '../upload/img'),  // 设置上传目录
-      keepExtensions: true,  // 保留扩展名 
-    }
-  })
-)
+app.use(KoaBody())
 // 这样写之后，在浏览器地址栏输入 地址+ 文件夹/文件名 即可回显图片
-app.use(KoaStatic(path.join(__dirname, '../upload')))
-app.use(parameter(app))  // 解析 body
-app.use(router.routes()).use(router.allowedMethods())
+// app.use(KoaStatic(path.join(__dirname, '../upload')))
+// app.use(parameter(app))  // 解析 body
+app.use(router.routes())
+
 
 // 统一的错误处理
 app.on('error', errHandler)
