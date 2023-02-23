@@ -22,6 +22,11 @@ const User = seq.define('code_user', {
     type: DataTypes.STRING(100),
     unique: false,
     comment: '用户伪验证码',
+  },
+  signature: {
+    type: DataTypes.STRING(100),
+    // unique: false,
+    comment: '数字签名',
   }
 })
 

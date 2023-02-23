@@ -15,26 +15,27 @@ class UserService {
 
   // 获取用户信息
   async getUserInfo({ username, password, code }) {
-    const whereOpt = {  }
+    const whereOpt = {}
     // 如果有密码，则加入密码一起查
-    username && Object.assign(whereOpt, {username})
+    username && Object.assign(whereOpt, { username })
     password && Object.assign(whereOpt, { password })
     code && Object.assign(whereOpt, { code })
     // console.log('service:', username);
     const res = await User.findOne({
       // 验证用户密码的时候需要拿到用户的密码
       // attributes: ['id', 'email', 'password', 'username', 'register_time', 'is_admin', 'motto', 'user_avatar'],
-      attributes: ['id', 'username', 'code'],
+      attributes: ['id', 'username', 'code', 'signature'],
       where: whereOpt,
     })
     return res ? res.dataValues : null;
   }
 
   // 更新用户信息
-  async updateUserInfo({username, code}) {
-    const whereOpt = {username}
-    const user = {code,}
-    const res = await User.update(user, {where: whereOpt});
+  async updateUserInfo({ username, code, signature }) {
+    // console.log('username:', username);
+    const whereOpt = { username }
+    const user = { code, signature }
+    const res = await User.update(user, { where: whereOpt });
     return res[0];
   }
 }

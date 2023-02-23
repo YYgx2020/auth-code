@@ -8,8 +8,8 @@ class UserController {
   // 用户注册处理
   async register(ctx, next) {
     // 先查看当前用户是否存在
-    const {username, password} = ctx.request.body
-    const res = await getUserInfo({username});
+    const { username, password } = ctx.request.body
+    const res = await getUserInfo({ username });
     if (res !== null) {
       ctx.body = {
         code: 1001,
@@ -18,7 +18,7 @@ class UserController {
       }
     } else {
       // 执行创建用户操作
-      const res = await createUser({username, password})
+      const res = await createUser({ username, password })
       ctx.body = {
         code: 200,
         message: '用户注册成功',
@@ -29,8 +29,8 @@ class UserController {
 
   // 用户登录处理
   async login(ctx, next) {
-    const {username, password} = ctx.request.body;
-    const res = await getUserInfo({username, password});
+    const { username, password } = ctx.request.body;
+    const res = await getUserInfo({ username, password });
     if (res !== null) {
       ctx.body = {
         code: 200,
@@ -48,9 +48,9 @@ class UserController {
 
   // 更新用户信息
   async update(ctx, next) {
-    const {username, code} = ctx.request.body;
+    const { username, code, signature } = ctx.request.body;
     // console.log(username, code);
-    const res = await updateUserInfo({username, code})
+    const res = await updateUserInfo({ username, code, signature })
     ctx.body = {
       code: 200,
       message: '更新成功',
@@ -60,10 +60,10 @@ class UserController {
 
   // 查看认证码
   async findUserCode(ctx, next) {
-    const {code} = ctx.request.body;
+    const { code } = ctx.request.body;
     console.log(ctx.request.body);
     console.log('code: ', code);
-    const res = await getUserInfo({code})
+    const res = await getUserInfo({ code })
     if (res !== null) {
       ctx.body = {
         code: 200,
@@ -82,12 +82,12 @@ class UserController {
   // 获取用户信息
   async getInfo(ctx, next) {
     try {
-      const {id} = ctx.query;
-      const res = await getUserInfo({ id })
+      const { username } = ctx.query;
+      const res = await getUserInfo({ username })
       ctx.body = {
         code: 200,
         message: '用户信息获取成功',
-        res,
+        result: res,
       }
     } catch (error) {
       ctx.app.emit('error', getUserInfoError, ctx)
